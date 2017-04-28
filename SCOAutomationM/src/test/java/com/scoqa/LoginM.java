@@ -135,9 +135,11 @@ SoftAssert sAssert=new SoftAssert();
 			createScreenShot(cdriver,TC_ID);
 			//=============Write to xlsx sheet================
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
+			System.out.println( TC_ID +" is getting failed");
 			throw new Exception("Login operation is failed");				
 		}
 		catch(NoSuchElementException ex){		
+			System.out.println( TC_ID +" is getting passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
 	  	  
@@ -235,9 +237,11 @@ SoftAssert sAssert=new SoftAssert();
 		try{
 			
 			Assert.assertEquals(actualText, expectedText);
+			System.out.println( TC_ID +" is getting Passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
 		catch(AssertionError n){
+			System.out.println( TC_ID +" is getting failed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
 			//Assert.fail("Actual Text " + actualText +" is not matching" + expectedText+"both are not matching");
 			//throw new Exception("Switch tenant operation is failed");
@@ -294,9 +298,11 @@ SoftAssert sAssert=new SoftAssert();
 	 
 	 try{
 			cdriver.findElement(By.id("UserName"));
+			System.out.println( TC_ID +" is getting Passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");				
 		}
-		catch(NoSuchElementException ex){		
+		catch(NoSuchElementException ex){	
+			System.out.println( TC_ID +" is getting Failed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
 			throw new Exception("Logoff operation is failed");
 		}
