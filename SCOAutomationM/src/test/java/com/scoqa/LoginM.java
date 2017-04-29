@@ -31,14 +31,12 @@ import org.testng.asserts.SoftAssert;
 
 import com.dataprovider.LoginDataProvider;
 import com.xls.ReadWriteXlsx;
+//button[@type='submit']
+import com.pageobject.LoginPage;
+import com.pageobject.HomePage;
 
 public class LoginM {
 	
-
-
-
-
-
 //Instance Variable	
 ChromeDriver cdriver=null;
 ChromeOptions options=null;
@@ -62,10 +60,17 @@ Action action=null;
 ReadWriteXlsx obx=null;
 SoftAssert sAssert=new SoftAssert(); 
 static Logger log=Logger.getLogger(LoginM.class);
-	
-	@BeforeTest
-	public void setUp() throws IOException{
-	log.info("Inside the setup method");
+
+LoginPage loginPage; 
+
+//HomePage homePage=new HomePage(cdriver);;
+
+
+@BeforeTest
+public void setUp() throws IOException{
+	    //loginPage=new LoginPage(cdriver);
+	    
+	    log.info("Inside the setup method");
 		String relativePath="xls/TestCase_BOSS.xlsx";
 		String absolutePath=new File(relativePath).getAbsolutePath();
 		obx=new ReadWriteXlsx(absolutePath);
@@ -100,7 +105,11 @@ static Logger log=Logger.getLogger(LoginM.class);
 		
 		cdriver.manage().window().maximize();	
 		wait=new WebDriverWait(cdriver,20);
+		loginPage=new LoginPage(cdriver);
 			
+		
+		
+		//============Launch the url===========
 		cdriver.get(url);
 		System.out.println("Driver get title " + cdriver.getTitle());
 	} 
@@ -108,7 +117,7 @@ static Logger log=Logger.getLogger(LoginM.class);
 //================Test Method for Login using Data Provider========================
   @Test(dataProvider="loginDP", dataProviderClass=LoginDataProvider.class,enabled=true)
   public void login(String username,String password,String TC_ID,String rIndex,String resultCol) throws Exception {
-	  log.info("TC_ID is "+TC_ID+" Username is " + username + "Password is " + password);
+	  log.info(TC_ID+" startes the execution");
 	  //System.out.println("TC_ID is "+TC_ID+" Username is " + username + "Password is " + password);
 	  rowIndex=Integer.parseInt(rIndex);
 	  colIndex=Integer.parseInt(resultCol);
@@ -116,26 +125,28 @@ static Logger log=Logger.getLogger(LoginM.class);
 	  
 	  //===================Login to the portal============================
 	  	wb1=null;
-	  	wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-		wb1.sendKeys(username);
+	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
+	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
+	  	//wb1=loginPage.getUsername();
+	  	wb1.sendKeys(username);
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
 		wb1.sendKeys(password);
 		
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
 		wb1.click();
 		
-		
-	  
-	  
 	  //=============Take a png for failure test case and place it BossScreenshot Folder ==============
 	  //Validation for Authorized User.
 		
 		try{
 			cdriver.findElement(By.id("UserName"));
+			//loginPage.getUsername();
 			//======TakeScreenShot of failure====================
 			createScreenShot(cdriver,TC_ID);
 			//=============Write to xlsx sheet================
@@ -150,6 +161,10 @@ static Logger log=Logger.getLogger(LoginM.class);
 			System.out.println( TC_ID +" is getting passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
+		finally{
+			   log.info(TC_ID+" ends the execution");
+		   }
+		 
 	  	  
   }
   
@@ -159,23 +174,30 @@ static Logger log=Logger.getLogger(LoginM.class);
 //==================================Switch Tenant Method will execute if Login is Success=================================
   @Test(dataProvider="switchTenantDP",dataProviderClass=LoginDataProvider.class,enabled=true)
   public void switchToTenant(String username,String password,String tenantName,String TC_ID,String rIndex,String resultCol) throws Exception{ 
-	  	
+	  
+	    
+	  	log.info(TC_ID+" startes the execution");
 	  	rowIndex=Integer.parseInt(rIndex);
 		colIndex=Integer.parseInt(resultCol);
 
 		
 		//===================Login to the portal============================
-	  	wb1=null;
-	  	wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-		wb1.sendKeys(username);
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
+	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
+	  	//wb1=loginPage.getUsername();
+	  	wb1.sendKeys(username);
+		
+		wb1=null;
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
 		wb1.sendKeys(password);
 		
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
 		wb1.click();
 		
 		//================End of Login==================================
@@ -254,9 +276,11 @@ static Logger log=Logger.getLogger(LoginM.class);
 			//Assert.fail("Actual Text " + actualText +" is not matching" + expectedText+"both are not matching");
 			//throw new Exception("Switch tenant operation is failed");
 		}
+		
 		finally{
-			System.out.println("Switch Account is done");
-		}
+			   log.info(TC_ID+" ends the execution");
+		   }
+		 
 		
   }
   
@@ -266,26 +290,29 @@ static Logger log=Logger.getLogger(LoginM.class);
  //==================================Log off Method will execute if Login is Success=================================
  @Test(dataProvider="logoffDP",dataProviderClass=LoginDataProvider.class,enabled=true)
  public void logoff(String username,String password,String TC_ID,String rIndex,String resultCol) throws Exception{ 
-	 
+	 log.info(TC_ID+" startes the execution");
 	 rowIndex=Integer.parseInt(rIndex);
 	 colIndex=Integer.parseInt(resultCol);
 	 
 	 
 	//===================Login to the portal============================
-	  	wb1=null;
-	  	wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-		wb1.sendKeys(username);
+	 	wb1=null;
+	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
+	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
+	  	//wb1=loginPage.getUsername();
+	  	wb1.sendKeys(username);
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
 		wb1.sendKeys(password);
 		
 		
 		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
 		wb1.click();
-		
-	  //================End of Login==================================
+		 //================End of Login==================================
 		
 	 
 	 
@@ -317,7 +344,9 @@ static Logger log=Logger.getLogger(LoginM.class);
 			throw new Exception("Logoff operation is failed");
 		}
 	 
-	 
+	   finally{
+		   log.info(TC_ID+" ends the execution");
+	   }
 	 
 } 
   
