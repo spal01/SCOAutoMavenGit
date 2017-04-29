@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+
+import org.apache.log4j.Logger;
 //import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -35,6 +37,8 @@ public class LoginM {
 
 
 
+
+
 //Instance Variable	
 ChromeDriver cdriver=null;
 ChromeOptions options=null;
@@ -57,10 +61,11 @@ Action action=null;
 	  
 ReadWriteXlsx obx=null;
 SoftAssert sAssert=new SoftAssert(); 
-
+static Logger log=Logger.getLogger(LoginM.class);
 	
 	@BeforeTest
 	public void setUp() throws IOException{
+	log.info("Inside the setup method");
 		String relativePath="xls/TestCase_BOSS.xlsx";
 		String absolutePath=new File(relativePath).getAbsolutePath();
 		obx=new ReadWriteXlsx(absolutePath);
@@ -103,7 +108,7 @@ SoftAssert sAssert=new SoftAssert();
 //================Test Method for Login using Data Provider========================
   @Test(dataProvider="loginDP", dataProviderClass=LoginDataProvider.class,enabled=true)
   public void login(String username,String password,String TC_ID,String rIndex,String resultCol) throws Exception {
-	
+	  log.info("TC_ID is "+TC_ID+" Username is " + username + "Password is " + password);
 	  //System.out.println("TC_ID is "+TC_ID+" Username is " + username + "Password is " + password);
 	  rowIndex=Integer.parseInt(rIndex);
 	  colIndex=Integer.parseInt(resultCol);
@@ -135,10 +140,13 @@ SoftAssert sAssert=new SoftAssert();
 			createScreenShot(cdriver,TC_ID);
 			//=============Write to xlsx sheet================
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
+			log.info(TC_ID +" is getting failed");
 			System.out.println( TC_ID +" is getting failed");
+			
 			throw new Exception("Login operation is failed");				
 		}
 		catch(NoSuchElementException ex){		
+			log.info(TC_ID +" is getting passed");
 			System.out.println( TC_ID +" is getting passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
@@ -208,8 +216,6 @@ SoftAssert sAssert=new SoftAssert();
 		wb1.click();
 		
 		
-		
-		
 		//Verify the account has been switched properly
 		Thread.sleep(2000);
 		wb1=null;
@@ -237,10 +243,12 @@ SoftAssert sAssert=new SoftAssert();
 		try{
 			
 			Assert.assertEquals(actualText, expectedText);
+			log.info(TC_ID +" is getting passed");
 			System.out.println( TC_ID +" is getting Passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
 		catch(AssertionError n){
+			log.info(TC_ID +" is getting failed");
 			System.out.println( TC_ID +" is getting failed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
 			//Assert.fail("Actual Text " + actualText +" is not matching" + expectedText+"both are not matching");
@@ -298,10 +306,12 @@ SoftAssert sAssert=new SoftAssert();
 	 
 	 try{
 			cdriver.findElement(By.id("UserName"));
+			log.info(TC_ID +" is getting passed");
 			System.out.println( TC_ID +" is getting Passed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");				
 		}
 		catch(NoSuchElementException ex){	
+			log.info(TC_ID +" is getting failed");
 			System.out.println( TC_ID +" is getting Failed");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
 			throw new Exception("Logoff operation is failed");

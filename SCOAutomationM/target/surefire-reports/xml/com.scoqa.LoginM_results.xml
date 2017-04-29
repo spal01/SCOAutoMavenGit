@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Test"
+           tests="3"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="67.365">
+  <properties />
+  
+  
+            <testcase name="login" time="10.496" classname="com.scoqa.LoginM" />
+                <testcase name="switchToTenant" time="38.156" classname="com.scoqa.LoginM" />
+                <testcase name="logoff" time="18.713" classname="com.scoqa.LoginM" />
+      
+</testsuite>
