@@ -4,12 +4,12 @@
            failures="0"
            errors="0"
            skipped="0"
-           time="93.986">
+           time="82.194">
   <properties />
   
   
-            <testcase name="switchToTenant" time="38.565" classname="com.scoqa.LoginM" />
-                <testcase name="login" time="11.897" classname="com.scoqa.LoginM" />
-                <testcase name="logoff" time="43.524" classname="com.scoqa.LoginM" />
+            <testcase name="login" time="23.775" classname="com.scoqa.LoginM" />
+                <testcase name="switchToTenant" time="31.574" classname="com.scoqa.LoginM" />
+                <testcase name="logoff" time="26.845" classname="com.scoqa.LoginM" />
       
 </testsuite>

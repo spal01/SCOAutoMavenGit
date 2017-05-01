@@ -14,7 +14,6 @@ WebDriver cdriver=null;
 
 	public LoginPage(WebDriver cdriver){
 		this.cdriver=cdriver;
-		System.out.println("in login page");
 		PageFactory.initElements(cdriver, this);
 		
 	

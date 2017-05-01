@@ -61,15 +61,15 @@ ReadWriteXlsx obx=null;
 SoftAssert sAssert=new SoftAssert(); 
 static Logger log=Logger.getLogger(LoginM.class);
 
+int time=2000;
+//==========Page Object Component===========
 LoginPage loginPage; 
-
-//HomePage homePage=new HomePage(cdriver);;
+HomePage homePage;
 
 
 @BeforeTest
 public void setUp() throws IOException{
-	    //loginPage=new LoginPage(cdriver);
-	    
+	    	    
 	    log.info("Inside the setup method");
 		String relativePath="xls/TestCase_BOSS.xlsx";
 		String absolutePath=new File(relativePath).getAbsolutePath();
@@ -82,6 +82,8 @@ public void setUp() throws IOException{
 	
 	@BeforeMethod
 	public void openUrl(){
+		actualText="";
+		expectedText="";
 		//=============Set the chrome options===================
 		options = new ChromeOptions();
 		 
@@ -103,75 +105,94 @@ public void setUp() throws IOException{
 		System.setProperty("webdriver.chrome.driver",absolutePath);
 		cdriver=new ChromeDriver(options);	
 		
+		
 		cdriver.manage().window().maximize();	
 		wait=new WebDriverWait(cdriver,20);
+		
+		//==========Creating object of Each Page=============
 		loginPage=new LoginPage(cdriver);
-			
+		homePage=new HomePage(cdriver);	
 		
 		
 		//============Launch the url===========
 		cdriver.get(url);
-		System.out.println("Driver get title " + cdriver.getTitle());
+		
 	} 
+
+
+/*@Test(priority=1)
+public void openLoginPage()
+{
+	String expectedText="ShoreTel Sky Portal Login";
+	String actualText=cdriver.getTitle();
+	//System.out.println("Actual Text " + actualText);
+	try{	
+		Assert.assertEquals(actualText, expectedText);
+		log.info("Login page has open");
+		}
+	catch(AssertionError n){
+		log.info("Login page does not open");	
+		}
 	
-//================Test Method for Login using Data Provider========================
+}	
+*/	
+//================Test Login Operation========================
   @Test(dataProvider="loginDP", dataProviderClass=LoginDataProvider.class,enabled=true)
   public void login(String username,String password,String TC_ID,String rIndex,String resultCol) throws Exception {
-	  log.info(TC_ID+" startes the execution");
-	  //System.out.println("TC_ID is "+TC_ID+" Username is " + username + "Password is " + password);
+	  log.info(TC_ID+" startes the execution"); 
 	  rowIndex=Integer.parseInt(rIndex);
 	  colIndex=Integer.parseInt(resultCol);
+	
+	  try{
 	  
-	  
+	  actualText=cdriver.getTitle();
+	  expectedText="ShoreTel Sky Portal Login";
+		//System.out.println("Actual Text " + actualText);
+	  Assert.assertEquals(actualText, expectedText);
+	  log.info("Login page has open");
+		  
 	  //===================Login to the portal============================
-	  	wb1=null;
-	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
-	  	//wb1=loginPage.getUsername();
-	  	wb1.sendKeys(username);
-		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
-	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
-		wb1.sendKeys(password);
-		
-		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
-		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
-		wb1.click();
-		
+	  loginOperation(username,password);	 	
+	  //====================End of Login Operation===============
+	  
 	  //=============Take a png for failure test case and place it BossScreenshot Folder ==============
 	  //Validation for Authorized User.
 		
 		try{
-			cdriver.findElement(By.id("UserName"));
-			//loginPage.getUsername();
+			cdriver.findElement(By.id("UserName"));	
 			//======TakeScreenShot of failure====================
 			createScreenShot(cdriver,TC_ID);
 			//=============Write to xlsx sheet================
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
-			log.info(TC_ID +" is getting failed");
-			System.out.println( TC_ID +" is getting failed");
-			
+			log.info(TC_ID +" is Fail");
+			System.out.println( TC_ID +" is Fail");
+			createScreenShot(cdriver,TC_ID);
 			throw new Exception("Login operation is failed");				
 		}
 		catch(NoSuchElementException ex){		
-			log.info(TC_ID +" is getting passed");
-			System.out.println( TC_ID +" is getting passed");
+			log.info(TC_ID +" is pass");
+			System.out.println( TC_ID +" is pass");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
 		finally{
 			   log.info(TC_ID+" ends the execution");
 		   }
-		 
+	  }
+	  
+	  //===========Catch when no internet connection or web page does not opens=========
+	  catch(AssertionError n){
+		  createScreenShot(cdriver,TC_ID);
+		//  System.out.println("This site can’t be reached -- Check network connectivity");
+		  log.info("This site can’t be reached -- Check network connectivity");
+		  throw new Exception("This site can’t be reached -- Check network connectivity");
+	  }
 	  	  
   }
   
   
   
   
-//==================================Switch Tenant Method will execute if Login is Success=================================
+//==================================Test Switch Tenant Operation=================================
   @Test(dataProvider="switchTenantDP",dataProviderClass=LoginDataProvider.class,enabled=true)
   public void switchToTenant(String username,String password,String tenantName,String TC_ID,String rIndex,String resultCol) throws Exception{ 
 	  
@@ -181,72 +202,67 @@ public void setUp() throws IOException{
 		colIndex=Integer.parseInt(resultCol);
 
 		
-		//===================Login to the portal============================
+		try{
+			  
+			  actualText=cdriver.getTitle();
+			  expectedText="ShoreTel Sky Portal Login";
+				//System.out.println("Actual Text " + actualText);
+			  Assert.assertEquals(actualText, expectedText);
+			  log.info("Login page has open");
+				
 		
-		wb1=null;
-	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
-	  	//wb1=loginPage.getUsername();
-	  	wb1.sendKeys(username);
-		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
-	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
-		wb1.sendKeys(password);
-		
-		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
-		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
-		wb1.click();
-		
+		//===================Operation on Login Page============================
+		loginOperation(username,password);	
 		//================End of Login==================================
 		
-		
+		//=========================Operation on Home Page==============================
+		//================Mouse move to Right top icon============================= 
 		 actions=new Actions(cdriver);
-		 wb1=null;
-		 wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@id='top-options-icon']")));
+		 wb1=null;	 
+		 wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getTopIcon()));
 		 action=actions.moveToElement(wb1).build();
 		 action.perform();
-		 
+		 //===============End of Mouse move to Right top icon======================
 		
-		 String switchTenantPath="//a[@id='switch-account-text']";
-		 wb1=null;
-		 wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(switchTenantPath)));
+		//================Mouse move and Click on Switch Account=============================
+		 wb1=null; 
+		 wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getSwitchAccount()));
 		 actions.moveToElement(wb1).build().perform();
 		 actions.click(wb1).build().perform();
-			
+		//================End of Mouse move and Click on Switch Account=============================	
 		
-		wb1=null;
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("companiesAutocomplete")));
+		 //================Start of switch operation========================
+		//================Enter the tenant Name=============================
+		wb1=null;		
+		wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getAutoComplete()));
 		wb1.sendKeys(tenantName);
 		
-		//Thread.sleep(2000);
+		//Thread.sleep(time);
 		wb1=null; 
 		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a/strong[contains(text(),'"+tenantName+"')]")));
 		wb1.click();
+		//===========================Selection of tenant done==================
 		
-		Thread.sleep(4000);
-		wb1=null; 
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("peopleForSelectedAccount")));
+		Thread.sleep(time);
+		wb1=null; 		
+		wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getSelectedAccount()));
 		wb1.click();
 		Select sel=new Select(wb1);
 		sel.selectByIndex(1);
 		
 		wb1=null; 
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("SwitchAccount_OK")));
+		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("SwitchAccount_OK")));
+		wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getSwitchAccountOk()));
 		wb1.click();
 		
+		//===============End of switch operation====================================
 		
-		//Verify the account has been switched properly
-		Thread.sleep(2000);
-		wb1=null;
-		
-		
-			
+		//=============Verify Switch has done properly or not==============
+		Thread.sleep(time);
+		wb1=null;		
 			
 		String expectedText=tenantName;	
-		wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='company_name']/a")));
+		wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getTenantName()));
 		String actualText=wb1.getText();
 		System.out.println("Actual text is " + actualText);
 		
@@ -261,69 +277,72 @@ public void setUp() throws IOException{
 		}
   */
 		
-		//===========Verify the text=================
-		try{
+		
+	  try{
 			
 			Assert.assertEquals(actualText, expectedText);
-			log.info(TC_ID +" is getting passed");
-			System.out.println( TC_ID +" is getting Passed");
+			log.info(TC_ID +" is pass");
+			System.out.println( TC_ID +" is pass");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");
 		}
 		catch(AssertionError n){
-			log.info(TC_ID +" is getting failed");
-			System.out.println( TC_ID +" is getting failed");
+			log.info(TC_ID +" is Fail");
+			System.out.println( TC_ID +" is Fail");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
+			throw new Exception("Switch operation is fail");
 			//Assert.fail("Actual Text " + actualText +" is not matching" + expectedText+"both are not matching");
 			//throw new Exception("Switch tenant operation is failed");
 		}
-		
 		finally{
 			   log.info(TC_ID+" ends the execution");
 		   }
-		 
+		}
+		//===========Catch when no internet connection or web page does not opens=========
+		  catch(AssertionError n){
+			  createScreenShot(cdriver,TC_ID);
+			//  System.out.println("This site can’t be reached -- Check network connectivity");
+			  log.info("This site can’t be reached -- Check network connectivity");
+			  throw new Exception("This site can’t be reached -- Check network connectivity");
+		  }
 		
   }
   
   
   
   
- //==================================Log off Method will execute if Login is Success=================================
+ //==================================Test Log Off operation=================================
  @Test(dataProvider="logoffDP",dataProviderClass=LoginDataProvider.class,enabled=true)
  public void logoff(String username,String password,String TC_ID,String rIndex,String resultCol) throws Exception{ 
 	 log.info(TC_ID+" startes the execution");
 	 rowIndex=Integer.parseInt(rIndex);
 	 colIndex=Integer.parseInt(resultCol);
+		
+	 try{
+			  
+			  actualText=cdriver.getTitle();
+			  expectedText="ShoreTel Sky Portal Login";	
+			  Assert.assertEquals(actualText, expectedText);
+			  log.info("Login page has open");
 	 
 	 
 	//===================Login to the portal============================
-	 	wb1=null;
-	  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
-	  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
-	  	//wb1=loginPage.getUsername();
-	  	wb1.sendKeys(username);
+	 loginOperation(username,password);	
+	 	
+	  //================End of Login==================================
 		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
-	    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
-		wb1.sendKeys(password);
-		
-		
-		wb1=null;
-		//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
-		wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
-		wb1.click();
-		 //================End of Login==================================
-		
-	 
+	//====================Perform on Home Page============================= 
 	 
 	 actions=new Actions(cdriver);
 	 wb1=null;
-	 wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@id='top-options-icon']")));
+	 
+	 //wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@id='top-options-icon']")));
+	 wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getTopIcon()));
 	 action=actions.moveToElement(wb1).build();
 	 action.perform();
 	 
 	 wb1=null;
-	 wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(text(),'Log Off')]")));
+	 //wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(text(),'Log Off')]")));
+	 wb1=wait.until(ExpectedConditions.visibilityOf(homePage.getLogOff()));
 	 action=actions.moveToElement(wb1).build();
 	 action.perform();
 	 action=actions.click(wb1).build();
@@ -333,13 +352,14 @@ public void setUp() throws IOException{
 	 
 	 try{
 			cdriver.findElement(By.id("UserName"));
-			log.info(TC_ID +" is getting passed");
-			System.out.println( TC_ID +" is getting Passed");
+			//loginPage.getUsername();
+			log.info(TC_ID +" is pass");
+			System.out.println( TC_ID +" is pass");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Pass");				
 		}
 		catch(NoSuchElementException ex){	
-			log.info(TC_ID +" is getting failed");
-			System.out.println( TC_ID +" is getting Failed");
+			log.info(TC_ID +" is Fail");
+			System.out.println( TC_ID +" is Fail");
 			obx.writeData("Test_Case",rowIndex,colIndex,"Fail");
 			throw new Exception("Logoff operation is failed");
 		}
@@ -347,7 +367,15 @@ public void setUp() throws IOException{
 	   finally{
 		   log.info(TC_ID+" ends the execution");
 	   }
-	 
+
+ }
+//===========Catch when no internet connection or web page does not opens=========
+ catch(AssertionError n){
+	  createScreenShot(cdriver,TC_ID);
+	//  System.out.println("This site can’t be reached -- Check network connectivity");
+	  log.info("This site can’t be reached -- Check network connectivity");
+	  throw new Exception("This site can’t be reached -- Check network connectivity");
+  }
 } 
   
   
@@ -361,13 +389,7 @@ public void setUp() throws IOException{
  
  
  
- 
- 
- 
- 
- 
- 
- 
+
  
  //================It will run after each test method and close the browser========================
   @AfterMethod(alwaysRun=true)
@@ -381,12 +403,54 @@ public void setUp() throws IOException{
 //=========Create Screen Shot for failure test case==================  
   
 public void createScreenShot(ChromeDriver ccDriver,String TC_ID) throws IOException{
-   efw=new EventFiringWebDriver(cdriver);
+    efw=new EventFiringWebDriver(cdriver);
 	File f1=efw.getScreenshotAs(OutputType.FILE);
 	relativePath="BossScreenshot/"+TC_ID+".png";
 	absolutePath=new File(relativePath).getAbsolutePath();
-	FileUtils.copyFile(f1, new File(absolutePath));
+	File f2=new File(absolutePath);
+	if(f2.exists()){
+		f2.delete();
+		f2.createNewFile();
+		FileUtils.copyFile(f1,f2);	
+	}
+	
+	
 }
   
+
+//===========================Login in to portal==============
   
+public void loginOperation(String userName,String passWord){
+		
+	wb1=null;
+  	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("UserName")));
+  	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getUsername()));
+  	//wb1=loginPage.getUsername();
+  	wb1.sendKeys(userName);
+	
+	wb1=null;
+	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Password")));
+    wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getPassword()));	
+	wb1.sendKeys(passWord);
+	
+	
+	wb1=null;
+	//wb1=wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@type='submit']")));
+	wb1=wait.until(ExpectedConditions.visibilityOf(loginPage.getSubmit()));	
+	wb1.click();
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
 }

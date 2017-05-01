@@ -2,20 +2,20 @@
 <testng-results skipped="0" failed="0" ignored="0" total="3" passed="3">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="292590" started-at="2017-04-29T10:41:33Z" finished-at="2017-04-29T10:46:26Z">
+  <suite name="Suite" duration-ms="478992" started-at="2017-05-01T06:22:36Z" finished-at="2017-05-01T06:30:35Z">
     <groups>
     </groups>
-    <test name="Test" duration-ms="292590" started-at="2017-04-29T10:41:33Z" finished-at="2017-04-29T10:46:26Z">
+    <test name="Test" duration-ms="478992" started-at="2017-05-01T06:22:36Z" finished-at="2017-05-01T06:30:35Z">
       <class name="com.scoqa.LoginM">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="setUp" is-config="true" duration-ms="2543" started-at="2017-04-29T16:11:33Z" finished-at="2017-04-29T16:11:36Z">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="setUp" is-config="true" duration-ms="3513" started-at="2017-05-01T11:52:36Z" finished-at="2017-05-01T11:52:40Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="62756" started-at="2017-04-29T16:11:38Z" finished-at="2017-04-29T16:12:41Z">
+        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="148989" started-at="2017-05-01T11:52:42Z" finished-at="2017-05-01T11:55:11Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- openUrl -->
-        <test-method status="PASS" signature="login(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="login" duration-ms="11897" started-at="2017-04-29T16:12:41Z" data-provider="loginDP" finished-at="2017-04-29T16:12:53Z">
+        <test-method status="PASS" signature="login(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="login" duration-ms="23775" started-at="2017-05-01T11:55:11Z" data-provider="loginDP" finished-at="2017-05-01T11:55:35Z">
           <params>
             <param index="0">
               <value>
@@ -46,15 +46,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="179" started-at="2017-04-29T16:12:53Z" finished-at="2017-04-29T16:12:53Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="40" started-at="2017-05-01T11:55:35Z" finished-at="2017-05-01T11:55:35Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="61309" started-at="2017-04-29T16:12:54Z" finished-at="2017-04-29T16:13:55Z">
+        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="119694" started-at="2017-05-01T11:55:36Z" finished-at="2017-05-01T11:57:36Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- openUrl -->
-        <test-method status="PASS" signature="logoff(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="logoff" duration-ms="43524" started-at="2017-04-29T16:13:55Z" data-provider="logoffDP" finished-at="2017-04-29T16:14:38Z">
+        <test-method status="PASS" signature="logoff(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="logoff" duration-ms="26845" started-at="2017-05-01T11:57:36Z" data-provider="logoffDP" finished-at="2017-05-01T11:58:03Z">
           <params>
             <param index="0">
               <value>
@@ -85,15 +85,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- logoff -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="52" started-at="2017-04-29T16:14:38Z" finished-at="2017-04-29T16:14:39Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="48" started-at="2017-05-01T11:58:03Z" finished-at="2017-05-01T11:58:03Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="68090" started-at="2017-04-29T16:14:39Z" finished-at="2017-04-29T16:15:47Z">
+        <test-method status="PASS" signature="openUrl()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="openUrl" is-config="true" duration-ms="120210" started-at="2017-05-01T11:58:03Z" finished-at="2017-05-01T12:00:03Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- openUrl -->
-        <test-method status="PASS" signature="switchToTenant(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="switchToTenant" duration-ms="38565" started-at="2017-04-29T16:15:47Z" data-provider="switchTenantDP" finished-at="2017-04-29T16:16:26Z">
+        <test-method status="PASS" signature="switchToTenant(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="switchToTenant" duration-ms="31574" started-at="2017-05-01T12:00:03Z" data-provider="switchTenantDP" finished-at="2017-05-01T12:00:35Z">
           <params>
             <param index="0">
               <value>
@@ -129,7 +129,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- switchToTenant -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="59" started-at="2017-04-29T16:16:26Z" finished-at="2017-04-29T16:16:26Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.scoqa.LoginM@cd2dae5]" name="tearDown" is-config="true" duration-ms="60" started-at="2017-05-01T12:00:35Z" finished-at="2017-05-01T12:00:35Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
