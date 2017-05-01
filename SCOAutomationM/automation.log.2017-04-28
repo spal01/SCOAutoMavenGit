@@ -1,5 +1,0 @@
-2017-04-28 23:35:04 INFO  LoginM:68 - Inside the setup method
-2017-04-28 23:37:14 INFO  LoginM:111 - TC_ID is TC_01 Username is staff@shoretel.comPassword is Abc123!!
-2017-04-28 23:37:23 INFO  LoginM:149 - TC_01 is getting passed
-2017-04-28 23:39:01 INFO  LoginM:309 - TC_03 is getting passed
-2017-04-28 23:41:14 INFO  LoginM:246 - TC_02 is getting passed
