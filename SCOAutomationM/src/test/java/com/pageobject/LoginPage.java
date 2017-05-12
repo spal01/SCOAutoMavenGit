@@ -15,8 +15,7 @@ WebDriver cdriver=null;
 	public LoginPage(WebDriver cdriver){
 		this.cdriver=cdriver;
 		PageFactory.initElements(cdriver, this);
-		
-	
+
 	}
   
 	

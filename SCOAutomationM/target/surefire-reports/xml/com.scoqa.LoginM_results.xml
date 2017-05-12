@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="Test"
-           tests="3"
+           tests="4"
            failures="0"
            errors="0"
            skipped="0"
-           time="78.931">
+           time="48.950">
   <properties />
   
   
-            <testcase name="switchToTenant" time="32.601" classname="com.scoqa.LoginM" />
-                <testcase name="login" time="20.385" classname="com.scoqa.LoginM" />
-                <testcase name="logoff" time="25.945" classname="com.scoqa.LoginM" />
+            <testcase name="switchToTenant" time="9.252" classname="com.scoqa.LoginM" />
+                <testcase name="logoff" time="7.217" classname="com.scoqa.LoginM" />
+                <testcase name="userWithoutProfile" time="28.788" classname="com.scoqa.LoginM" />
+                <testcase name="login" time="3.693" classname="com.scoqa.LoginM" />
       
 </testsuite>

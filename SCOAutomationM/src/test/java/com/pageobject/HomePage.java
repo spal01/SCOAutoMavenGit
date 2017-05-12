@@ -8,8 +8,6 @@ import org.testng.annotations.Test;
 
 public class HomePage {
 	WebDriver cdriver=null;
-	String autoTenantName="";
-	String tenantXpath="";
 	
 	public HomePage(WebDriver cdriver){
 		this.cdriver=cdriver;
@@ -47,6 +45,16 @@ public class HomePage {
 	public WebElement getTenantName() {
 		return tenantName;
 	}
+	
+	
+	public WebElement getPhoneSystem() {
+		return phoneSystem;
+	}
+
+	public WebElement getUsers() {
+		return users;
+	}
+
 
 	@FindBy(xpath="//span[@id='top-options-icon']")
 	private WebElement topIcon;
@@ -69,16 +77,13 @@ public class HomePage {
 	@FindBy(xpath="//div[@id='company_name']/a")
 	private WebElement tenantName;
 
-
-	/*@FindBy(xpath="//a/strong[contains(text(),'"+autoTenantName+"')]")
-	private WebElement tenant;
-*/
-
-    public void setTenantNameAuto(String autoTenantName){
-    	this.autoTenantName=autoTenantName;
-    	tenantXpath="//a/strong[contains(text(),'"+autoTenantName+"')]";
-    }
-
+	
+	@FindBy(xpath="//ul[@id='menu']/descendant::a[contains(text(),'Phone System')]")
+	private WebElement phoneSystem;
+	
+	
+	@FindBy(xpath="//ul[@id='menu']/descendant::ul/li/a[contains(text(),'Users')]")
+	private WebElement users;
 
 
 

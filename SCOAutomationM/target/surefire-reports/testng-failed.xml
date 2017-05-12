@@ -9,12 +9,10 @@
     <classes>
       <class name="com.scoqa.LoginM">
         <methods>
-          <include name="login" invocation-numbers="0"/>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="logoff" invocation-numbers="0"/>
+          <include name="userWithoutProfile" invocation-numbers="0"/>
           <include name="openUrl"/>
-          <include name="switchToTenant" invocation-numbers="0"/>
         </methods>
       </class> <!-- com.scoqa.LoginM -->
     </classes>

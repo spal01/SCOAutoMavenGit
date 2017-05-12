@@ -24,15 +24,11 @@ public class LoginDataProvider {
 	static ReadWriteXlsx obx=null;
 	
 	
-	
-	
-	
+
 	@DataProvider(name="loginDP")
 	public static Iterator<String[]> getLogin() throws IOException{
 		
-		
-		
-		
+			
 		testCaseRowIndex=1;
 		
 		loginData=new ArrayList<String[]>();
@@ -175,7 +171,57 @@ public class LoginDataProvider {
 		
 		}
 		
+
 		
+//==================DataProvider for 		
+		@DataProvider(name="userCreation")
+		public static Iterator<String[]> getUserData() throws IOException{
+			
+				
+			testCaseRowIndex=4;
+			
+			loginData=new ArrayList<String[]>();
+			String relativePath="xls/TestCase_BOSS.xlsx";
+			String absolutePath=new File(relativePath).getAbsolutePath();
+			obx=new ReadWriteXlsx(absolutePath);
+			
+			String testCaseId=obx.getData("Test_Case",testCaseRowIndex, testCaseIdCol);
+			int numberOfTestParam=Integer.parseInt((obx.getData("Test_Case", testCaseRowIndex, numberOfTestParamCol).replaceAll(".0","")));
+			
+			String[] finalData=new String[numberOfTestParam+3];
+			String testData=obx.getData("Test_Case", testCaseRowIndex, testParamsCol);
+
+			//=========PICK UP THE TEST DATA =====================
+			String[] data=null;
+			testData=testData.trim();
+			data=testData.split(",");
+			if(numberOfTestParam>=1)
+				data=testData.split(",");
+			else
+				data[0]=testData;
+
+			int i=0;
+			for(String d :data){
+				d=d.replaceAll(" ","");
+				finalData[i]=d;
+				i++;		
+			}
+			finalData[i++]=testCaseId;
+			finalData[i++]=String.valueOf(testCaseRowIndex);
+			finalData[i++]=String.valueOf(resultCol);
+			
+			//System.out.println("Print the final data");
+			for(String fd :finalData){
+			System.out.println("fd " + fd);
+			}
+			
+			
+			loginData.add(finalData);
+
+			
+			return loginData.iterator();
+		}
+	
 	
 	
 	
